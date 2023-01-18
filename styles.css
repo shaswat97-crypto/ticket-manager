@@ -51,7 +51,7 @@ header .pbox{
     width: 100%;
     cursor: pointer;
     margin: 10px;
-    border-radius: 5px;
+    border-radius: 100%;
     overflow: hidden;
 }
 .low{
@@ -92,15 +92,16 @@ main{
 }
 
 .modal{
+    
     height: 60vh;
     width: 40vw;
     background-color: green;
     position: absolute;
     left: calc((100vw - 40vw)/2);
     top: calc((100vh - 40vh)/2);
-    display: flex;
     border-radius: 5px;
     overflow: hidden;
+    display: none;
 }
 
 .textarea{
@@ -126,7 +127,33 @@ main{
 .prioritysel{
     width: 5rem;
     height: 5rem;
-    border-radius: 5px;
+    border-radius: 100%;
     overflow: hidden;
+    cursor: pointer;
     /* background-color: aqua; */
 }
+.allTickets{
+    display: flex;
+    padding: 2rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.ticket-holder{
+    background-color: green;
+    height: 12rem;
+    width: 19rem;
+    border-radius: .4rem;
+    overflow: hidden;
+}
+.priority-color{
+    background-color: brown;
+    height: 1rem;
+}
+.text-area{
+    background-color: orange;
+    height: calc(100% - 1rem);
+    padding: .5rem;
+}
+
+
+
