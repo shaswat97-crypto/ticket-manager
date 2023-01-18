@@ -92,7 +92,6 @@ main{
 }
 
 .modal{
-    
     height: 60vh;
     width: 40vw;
     background-color: green;
@@ -124,6 +123,10 @@ main{
     background-color: #3C2A21;
 }
 
+.priorityBorder{
+    border: 0.3rem solid #1A120B;
+}
+
 .prioritysel{
     width: 5rem;
     height: 5rem;
@@ -132,6 +135,24 @@ main{
     cursor: pointer;
     /* background-color: aqua; */
 }
+
+.buttonCont{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn{
+    padding: .6rem .2rem;
+    margin: .2rem;
+    width: 4rem;
+    color: #1A120B;
+    background-color: #D5CEA3;
+    border: none;
+    border-radius: .2rem;
+    cursor: pointer;
+}
 .allTickets{
     display: flex;
     padding: 2rem;
@@ -139,19 +160,22 @@ main{
     flex-wrap: wrap;
 }
 .ticket-holder{
-    background-color: green;
     height: 12rem;
     width: 19rem;
     border-radius: .4rem;
     overflow: hidden;
 }
 .priority-color{
-    background-color: brown;
     height: 1rem;
 }
+.id{
+    height: 1.5rem;
+    padding: .3rem;
+    background-color: #D5CEA3;
+}
 .text-area{
-    background-color: orange;
-    height: calc(100% - 1rem);
+    background-color: #D5CEA3;
+    height: calc(100% - 2.5rem);
     padding: .5rem;
 }
 
