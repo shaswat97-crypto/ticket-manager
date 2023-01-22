@@ -156,17 +156,18 @@ main{
 .allTickets{
     display: flex;
     padding: 2rem;
-    gap: 2rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
 }
 .ticket-holder{
-    height: 12rem;
-    width: 19rem;
+    height: 15rem;
+    width: 18.4rem;
     border-radius: .4rem;
     overflow: hidden;
 }
 .priority-color{
     height: 1rem;
+    cursor: pointer;
 }
 .id{
     height: 1.5rem;
@@ -175,8 +176,31 @@ main{
 }
 .text-area{
     background-color: #D5CEA3;
-    height: calc(100% - 2.5rem);
+    height: calc(100% - 4.5rem);
     padding: .5rem;
+    outline: none;
+}
+.btn-cont{
+    background-color: #D5CEA3;
+    display: flex;
+    justify-content: flex-end;
+    height: 2rem;
+    gap: .3rem;
+    padding: .3rem;
+}
+.btn-cont button{
+    padding: .1rem .3rem;
+    border: none;
+    background-color: #E5E5CB;
+    color: #1A120B;
+    border-radius: .2rem;
+    cursor: pointer;
+    transition: .2s;
+}
+.btn-cont button:hover{
+    background-color: #3C2A21;
+    color: #D5CEA3;
+
 }
 
 
