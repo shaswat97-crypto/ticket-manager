@@ -123,9 +123,22 @@ colorElArr.forEach((colorEl) => {
 function addFilter(colorEl) {
     colorEl.addEventListener('click', (e) => {
         // console.log(e.target.classList[1]);
+
+        //border
+        //remove from all
+        colorElArr.forEach((col) => {
+            col.classList.remove("priorityBorder");
+        });
+        //add to this
+        colorEl.classList.add("priorityBorder");
+
         let color = e.target.classList[1];
         let allTickets = document.querySelectorAll(".ticket-holder");
-        reset();
+        //reset all tickets
+        allTickets.forEach(ticket => {
+            ticket.style.display = "inline";
+        });
+        //filter
         allTickets.forEach((ticket) => {
             let patti = ticket.querySelector('.priority-color');
             let ticketColor = patti.classList[1];
@@ -133,13 +146,54 @@ function addFilter(colorEl) {
                 ticket.style.display = "none";
             }
         })
+        search();
     })
 }
 
 //reset
 function reset(){
     let allTickets = document.querySelectorAll(".ticket-holder");
+
+    //remove  all borders
+    colorElArr.forEach((col) => {
+        col.classList.remove("priorityBorder");
+    });
+    
     allTickets.forEach(ticket => {
         ticket.style.display = "inline";
     });
+}
+
+//search
+function search(){
+    //get filtered color
+    let color = null;
+    colorElArr.forEach((colorEl) => {
+        if(colorEl.classList.contains("priorityBorder")){
+            color = colorEl.classList[1];
+        }
+    });
+    let inEl = document.querySelectorAll('input')[0];
+    let allTickets = document.querySelectorAll(".ticket-holder");
+    allTickets.forEach((ticket) => {
+        ticket.style.display = 'none';
+    })
+    allTickets.forEach((ticket) => {
+        let idEl = ticket.querySelector('.id');
+        let textEl = ticket.querySelector('.text-area');
+        let patti = ticket.querySelector('.priority-color');
+        let text = inEl.value;
+        if(idEl.innerHTML.includes(text) || textEl.innerHTML.includes(text)){
+            if(color){
+                let pattiColor = patti.classList[1];
+                if(color == pattiColor){
+                    ticket.style.display = "inline";
+                }
+            }
+            else {
+                ticket.style.display = "inline";
+            }
+        }
+    })
+
 }
