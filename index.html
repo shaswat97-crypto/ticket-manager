@@ -10,17 +10,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./styles.css">
   <title>ticket-manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <div class="mainheader">Ticket Manager</div>
+  <div class="mainheader"><span>Ticket Manager</span></div>
   <header>
     <div class="left">
-      <div class="priority-picker">
-        <div class="text">Sort by priority</div>
-        <div class="pbox low"></div>
-        <div class="pbox mid"></div>
-        <div class="pbox high"></div>
+      <div class="disp-prop">
+        <div class="text">Filter by priority :</div>
+        <div class="color-cont priority-picker">
+          <div class="pbox low"></div>
+          <div class="pbox mid"></div>
+          <div class="pbox high"></div>
+        </div>
       </div>
       <div class="inpHolder">
         <input type="text" placeholder="search..." oninput="search()">
@@ -31,7 +36,7 @@
           <i class="fa-sharp fa-solid fa-plus"></i>
         </div>
         <div class="removebtn">
-          <i class="fa-sharp fa-solid fa-minus"></i>
+          <i class="fa-sharp fa-solid fa-xmark"></i>
         </div>
       </div>
     </div>
@@ -53,7 +58,7 @@
   </main>
 
   <main class="allTickets">
-    <div class="ticket-holder">
+    <!-- <div class="ticket-holder">
       <div class="priority-color low" id="1"></div>
       <div class="id">ID: ${shortid}</div>
       <div class="text-area">${text}</div>
@@ -61,7 +66,7 @@
         <button class="">Edit</button>
         <button class="">Remove</button>
       </div>
-    </div>
+    </div> -->
   </main>
 
   <script src="https://unpkg.com/shortid-dist@1.0.5/dist/shortid-2.2.13.min.js"></script>

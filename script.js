@@ -1,4 +1,9 @@
+//todo
+//edit lock ke baad upni posi pe aar
+//color change not working
+
 let addbutton = document.querySelector(".addbtn");
+let removeButton = document.querySelector(".removebtn");
 let addbuttonModal = document.querySelector(".add");
 let modal = document.querySelector(".modal");
 let allTickets = document.querySelector(".allTickets");
@@ -14,16 +19,20 @@ let revcolors = {
     yellow: 'mid',
     red: 'high'
 };
+let id = 0;
+if (localStorage.getItem("ticket_manager_id") && localStorage.getItem("ticket_manager_id").length > 0) {
+    id = Math.max(localStorage.getItem("ticket_manager_id"), id);
+}
 let currColor = "green";
 let addbtnclick = false;
-let id = 0;
 let ticketArray = [];
 if (localStorage.getItem("ticket_manager")) {
+    // allTickets.innerHTML = "";
     ticketArray = JSON.parse(localStorage.getItem("ticket_manager"));
     // console.log(ticketArray);
     ticketArray.forEach(ticket => {
         let ticketHolder = document.createElement("div");
-        render(ticket.id, ticket.shortid, ticket.color, ticket.text, ticketHolder);
+        render(ticket.id, ticket.shortid, ticket.color, ticket.text, ticketHolder, -1);
     })
 }
 addbutton.addEventListener("click", (e) => {
@@ -35,6 +44,12 @@ addbutton.addEventListener("click", (e) => {
     else {
         modal.style.display = "none";
     }
+});
+
+removeButton.addEventListener("click", (e) => {
+    // addbutton.style.display = "flex";
+    addbtnclick = false;
+    modal.style.display = "none";
 });
 
 //adding to allTickets
@@ -63,16 +78,21 @@ addTicket = (text, shortid) => {
     localStorage.setItem("ticket_manager", JSON.stringify(ticketArray));
 
     //render
-    render(id, shortid, revcolors[currColor], text, ticketHolder);
+    let tickets = document.querySelectorAll(".ticket-holder");
+    render(id, shortid, revcolors[currColor], text, ticketHolder, tickets.length);
     id++;
+    localStorage.setItem("ticket_manager_id", id);
+    // console.log(id);
 }
 
-function render(id, shortid, color, text, ticketHolder) {
+function render(id, shortid, color, text, ticketHolder, index) {
+    console.log(id);
+    let ticketArr = document.querySelectorAll(".ticket-holder");
     ticketHolder.classList.add("ticket-holder");
     ticketHolder.setAttribute("id", "id" + id);
     ticketHolder.innerHTML = `
         <div class="priority-color ${color}" id="id${id}"></div>
-        <div class="id">ID: ${shortid}</div>
+        <div class="id">ID : ${shortid}</div>
         <div class="text-area">${text}</div>
         <div class="btn-cont">
         <button class="">Edit</button>
@@ -80,9 +100,36 @@ function render(id, shortid, color, text, ticketHolder) {
       </div>
     `;
 
-    allTickets.appendChild(ticketHolder);
+    index--;
+    if (ticketArr.length > 0 && index >= 0)
+        ticketArr[index].insertAdjacentElement("afterend", ticketHolder);
+    else if (index == -1) {
+        ticketArr[0].insertAdjacentElement("beforebegin", ticketHolder);
+    }
+    else allTickets.appendChild(ticketHolder);
     editFn(ticketHolder, id);
     changePriority(ticketHolder, id);
+    removeFn(ticketHolder);
+}
+
+function removeFn(ticketHolder) {
+    let remEl = ticketHolder.querySelector(".btn-cont>:last-child");
+    remEl.addEventListener("click", (e) => {
+        let id = Number(e.target.parentElement.parentElement.id[2]);
+        //remove from ui
+        removeTicket(e.target.parentElement.parentElement.id);
+
+        //remove from local s
+        for (let i = 0; i < ticketArray.length; i++) {
+            let ticket = ticketArray[i];
+            console.log(ticket.id, id);
+            if (ticket.id == id) {
+                ticketArray.splice(i, 1);
+                break;
+            }
+        }
+        localStorage.setItem("ticket_manager", JSON.stringify(ticketArray));
+    })
 }
 
 //function for edit button
@@ -104,39 +151,46 @@ function editFn(ticketHolder, id) {
             textArea.setAttribute("contenteditable", "false");
 
             //udpate in local
-            ticketArray.forEach(ticket => {
-                if (ticket.id == id) {
+            for (let i = 0; i < ticketArray.length; i++) {
+                let ticket = ticketArray[i];
+                if (`id${ticket.id}` == e.target.parentElement.parentElement.id) {
                     ticket.text = textArea.innerHTML;
+                    break;
                 }
-            })
+            }
             localStorage.setItem("ticket_manager", JSON.stringify(ticketArray));
 
             //remove from ui
-            removeTicket(id);
+            let index = removeTicket(e.target.id);
 
             //add from local storage
             let objArr = JSON.parse(localStorage.getItem("ticket_manager"));
-            objArr.forEach(obj => {
-                if (obj.id == id) {
+            for (let i = 0; i < objArr.length; i++) {
+                let obj = objArr[i];
+                if (`id${obj.id}` == e.target.id) {
                     let ticketHolder = document.createElement("div");
-                    render(id, obj.shortid, obj.color, obj.text, ticketHolder);
-                    return;
+                    render(id, obj.shortid, obj.color, obj.text, ticketHolder, index);
+                    break;
                 }
-            })
+            }
         }
 
     })
 }
 
 function removeTicket(id) {
+    let index = 0;
     let allTickets = document.querySelectorAll(".ticket-holder");
     // console.log(allTicketsHolder);
-    allTickets.forEach(ticket => {
-        if (ticket.id == `id${id}`) {
+    for (let i = 0; i < allTickets.length; i++) {
+        let ticket = allTickets[i];
+        if (ticket.id == id) {
             ticket.remove();
-            return;
+            break;
         }
-    })
+        index++;
+    }
+    return index;
 }
 
 //function for priority patti
@@ -158,25 +212,29 @@ function changePriority(ticketHolder, id) {
         // console.log(patti.classList[1]);
 
         //udpate in local
-        ticketArray.forEach(ticket => {
-            if (ticket.id == id) {
+        for (let i = 0; i < ticketArray.length; i++) {
+            let ticket = ticketArray[i];
+
+            if (`id${ticket.id}` == e.target.id) {
                 ticket.color = arr[indx];
+                break;
             }
-        })
+        }
         localStorage.setItem("ticket_manager", JSON.stringify(ticketArray));
 
         //remove from ui
-        removeTicket(id);
+        let index = removeTicket(e.target.id);
 
         //add from local storage
         let objArr = JSON.parse(localStorage.getItem("ticket_manager"));
-        objArr.forEach(obj => {
-            if (obj.id == id) {
+        for (let i = 0; i < objArr.length; i++) {
+            let obj = objArr[i];
+            if (`id${obj.id}` == e.target.id) {
                 let ticketHolder = document.createElement("div");
-                render(id, obj.shortid, obj.color, obj.text, ticketHolder);
-                return;
+                render(id, obj.shortid, obj.color, obj.text, ticketHolder, index);
+                break;
             }
-        })
+        }
     })
 }
 
