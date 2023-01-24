@@ -348,12 +348,15 @@ main{
 }
 
 @media screen and (max-width:425px) {
+    header .left{
+        justify-content: space-around;
+    }
     .modal{
         flex-direction: column;
         width: 85vw;
         height: 60vh;
         left: calc((100vw - 85vw)/2);
-        top: calc((100vh - 35vh)/2);    
+        top: calc((100vh - 45vh)/2);    
     }
     .textarea{
         width: 100%;

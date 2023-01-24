@@ -103,7 +103,7 @@ function render(id, shortid, color, text, ticketHolder, index) {
     index--;
     if (ticketArr.length > 0 && index >= 0)
         ticketArr[index].insertAdjacentElement("afterend", ticketHolder);
-    else if (index == -1) {
+    else if (index == -1 && ticketArr.length>0) {
         ticketArr[0].insertAdjacentElement("beforebegin", ticketHolder);
     }
     else allTickets.appendChild(ticketHolder);
@@ -115,20 +115,25 @@ function render(id, shortid, color, text, ticketHolder, index) {
 function removeFn(ticketHolder) {
     let remEl = ticketHolder.querySelector(".btn-cont>:last-child");
     remEl.addEventListener("click", (e) => {
-        let id = Number(e.target.parentElement.parentElement.id[2]);
+        let elid = Number(e.target.parentElement.parentElement.id.substring(2));
         //remove from ui
         removeTicket(e.target.parentElement.parentElement.id);
 
         //remove from local s
         for (let i = 0; i < ticketArray.length; i++) {
             let ticket = ticketArray[i];
-            console.log(ticket.id, id);
-            if (ticket.id == id) {
+            // console.log(ticket.id, elid);
+            if (ticket.id == elid) {
                 ticketArray.splice(i, 1);
                 break;
             }
         }
         localStorage.setItem("ticket_manager", JSON.stringify(ticketArray));
+        //reset id
+        if(ticketArray.length == 0){
+            localStorage.setItem("ticket_manager_id", 0);
+            id=0;
+        }
     })
 }
 
