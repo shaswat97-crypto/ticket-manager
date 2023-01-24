@@ -79,7 +79,7 @@ addTicket = (text, shortid) => {
 
     //render
     let tickets = document.querySelectorAll(".ticket-holder");
-    render(id, shortid, revcolors[currColor], text, ticketHolder, tickets.length, -1);
+    render(id, shortid, revcolors[currColor], text, ticketHolder, -1);
     id++;
     localStorage.setItem("ticket_manager_id", id);
     // console.log(id);
